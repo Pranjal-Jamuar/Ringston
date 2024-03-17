@@ -1,0 +1,64 @@
+@font-face {
+  font-family: "Geist";
+  src: url("/font/Geist-Light.woff2") format("woff2");
+  font-weight: 300; /* or the correct weight for Geist-Light */
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/font/Geist-Bold.woff2") format("woff2");
+  font-weight: 700; /* or the correct weight for Geist-Bold */
+}
+
+body {
+  margin: 0;
+  background: #fff url(/bg.svg);
+  font-family: "Geist", sans-serif;
+  height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.mask {
+  overflow: hidden;
+}
+
+.layout-ws {
+  width: 100%;
+  box-sizing: border-box;
+  padding: clamp(16px, 5%, 100px); /* Adjust for fluid side margins */
+}
+
+/* Header */
+
+header {
+  position: absolute;
+  display: flex;
+  z-index: 10;
+  justify-content: space-between;
+  font-weight: bold;
+
+  a.logo {
+    font-size: 1.3rem;
+    color: black;
+  }
+
+  a.collection {
+    display: flex;
+    align-content: center;
+    gap: 0.5em;
+    color: white;
+  }
+}
