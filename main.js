@@ -28,6 +28,40 @@ function initThreeJS() {
   scene = new THREE.Scene()
 
   // Middle stuff
+  loader.load("ring.glb", function (gltf) {
+    ring = gltf.scene
+    ring.position.set(0, 0, 0)
+    ring.scale.set(0.5, 0.5, 0.5)
+    scene.add(ring)
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: "section.details",
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+      defaults: {
+        ease: "power3.out",
+        duration: 3,
+      },
+    })
+
+    timeline.to(ring.position, {
+      z: 2.5,
+      y: -0.34,
+    })
+    timeline.to(
+      ring.rotation,
+      {
+        z: 1,
+      },
+      "<"
+    )
+    const directionalLight = new THREE.DirectionalLight("lightblue", 10)
+    directionalLight.position.z = 8
+    scene.add(directionalLight)
+  })
 
   /**
    * Sizes
@@ -73,6 +107,39 @@ function initThreeJS() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 }
 
+function initRenderLoop() {
+  const clock = new THREE.Clock()
+
+  const tick = () => {
+    const elapsedTime = clock.getElapsedTime()
+
+    // Update objects
+    if (ring) {
+      if (!contactRotation) {
+        ring.rotation.y = 0.5 * elapsedTime
+        ring.rotation.x = 0
+        ring.rotation.z = 0
+      } else {
+        ring.rotation.y = 0
+        ring.rotation.x = 0.2 * elapsedTime
+        ring.rotation.z = 0.2 * elapsedTime
+      }
+    }
+
+    // Update Orbital Controls
+    // controls.update()
+
+    // Render
+    renderer.render(scene, camera)
+
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick)
+  }
+
+  tick()
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initThreeJS()
+  initRenderLoop()
 })
