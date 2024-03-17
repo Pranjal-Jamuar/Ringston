@@ -48,7 +48,7 @@ function initThreeJS() {
     })
 
     timeline.to(ring.position, {
-      z: 2.5,
+      z: 3.5,
       y: -0.34,
     })
     timeline.to(
@@ -107,6 +107,36 @@ function initThreeJS() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 }
 
+function animateWords() {
+  const words = ["Romance", "Rings", "Relationships"]
+  let currentIndex = 0
+  let split = null
+  const textElem = document.querySelector(".primary-h1 span")
+
+  const updateText = () => {
+    textElem.textContent = words[currentIndex]
+    split = new SplitType(textElem, { type: "chars" })
+    animateChars(split.chars)
+    currentIndex = (currentIndex + 1) % words.length
+  }
+
+  const animateChars = chars => {
+    gsap.from(chars, {
+      yPercent: 100,
+      stagger: 0.03,
+      duration: 1.5,
+      ease: "power4.out",
+      onComplete: () => {
+        if (split) {
+          split.revert()
+        }
+      },
+    })
+  }
+
+  setInterval(updateText, 3000)
+}
+
 function initRenderLoop() {
   const clock = new THREE.Clock()
 
@@ -139,7 +169,19 @@ function initRenderLoop() {
   tick()
 }
 
+const smoothScrollSetup = () => {
+  const lenis = new Lenis()
+  function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+  }
+  requestAnimationFrame(raf)
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initThreeJS()
   initRenderLoop()
+
+  animateWords()
+  smoothScrollSetup()
 })
