@@ -58,6 +58,49 @@ function initThreeJS() {
       },
       "<"
     )
+
+    function toggleWireframe(model, isWireframe, opacity) {
+      model.traverse(function (child) {
+        if (child.isMesh && child.material) {
+          child.material.wireframe = isWireframe
+          child.material.opacity = opacity
+          child.material.transparent = true
+        }
+      })
+    }
+
+    const contactTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: "section.contact",
+        start: "top 80%",
+        end: "bottom center",
+        //toggleActions: 'play none none reverse',
+        scrub: true,
+        onEnter: () => {
+          toggleWireframe(ring, true, 1)
+          contactRotation = true
+        },
+        onEnterBack: () => {
+          toggleWireframe(ring, true, 1)
+          contactRotation = true
+        },
+        onLeaveBack: () => {
+          toggleWireframe(ring, false, 1)
+          //contactRotation = false
+        },
+        onLeave: () => {
+          toggleWireframe(ring, false, 1)
+          //contactRotation = false
+        },
+      },
+    })
+
+    contactTl.to(ring.position, {
+      z: 0.3,
+      x: 0.4,
+      y: -0.23,
+    })
+
     const directionalLight = new THREE.DirectionalLight("lightblue", 10)
     directionalLight.position.z = 8
     scene.add(directionalLight)
@@ -170,7 +213,7 @@ const inspectParallax = () => {
   })
 }
 
-const sliderSection = () => {
+const horizontalSlider = () => {
   let mm = gsap.matchMedia()
   mm.add("(min-width: 768px", () => {
     let slider = document.querySelector(".slider")
@@ -224,6 +267,35 @@ const sliderSection = () => {
   })
 }
 
+const contactSection = () => {
+  gsap.set("h4, .inner-contact span", {
+    yPercent: 100,
+  })
+  gsap.set(".inner-contact p", {
+    opacity: 0,
+  })
+
+  const contactTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".inner-contact",
+      start: "-20% center",
+      end: "10%  40%",
+      scrub: true,
+    },
+  })
+
+  contactTl
+    .to(".line-top, .line-bottom", {
+      width: "100%",
+    })
+    .to("h4, .inner-contact span", {
+      yPercent: 0,
+    })
+    .to(".inner-contact p", {
+      opacity: 1,
+    })
+}
+
 function initRenderLoop() {
   const clock = new THREE.Clock()
 
@@ -271,6 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   animateWords()
   inspectParallax()
-  sliderSection()
+  horizontalSlider()
+  contactSection()
   smoothScrollSetup()
 })
