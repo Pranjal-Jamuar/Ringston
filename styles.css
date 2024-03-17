@@ -43,9 +43,9 @@
 
 body {
   margin: 0;
-  background: #fff url(/bg.svg);
+  background: #fff url("/bg.svg");
   font-family: "Geist", sans-serif;
-  height: 100vh;
+  height: 100vh; /* Remove later */
 }
 
 a {
@@ -253,7 +253,7 @@ h3 {
   }
 }
 
-/* Contact section */
+/* Reach out section */
 
 section.contact {
   background: #0f0f0d;
