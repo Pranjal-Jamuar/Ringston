@@ -30,6 +30,8 @@ Ringston is an exquisitely crafted landing page that offers a unique blend of ve
 
 [Ringston Live](https://pranjaljamuar-ringston-gsap.netlify.app/) - Bookmark this page for quick access in the future.
 
+![Ringston Demo](/public/Ringston.gif)
+
 ## How to Install Locally:
 
 1. Clone the repository to your local machine.
